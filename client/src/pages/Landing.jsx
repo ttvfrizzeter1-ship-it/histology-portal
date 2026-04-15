@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import SlideBackground from '../components/SlideBackground';
-import HumanCell3D from '../components/HumanCell3D';
 import { useTheme } from '../context/ThemeContext';
 import api from '../api/client';
 
@@ -230,7 +229,7 @@ export default function Landing() {
               ))}
             </div>
           </div>
-          <div className="flex items-center justify-center animate-fade-in"><HumanCell3D /></div>
+          <div className="flex items-center justify-center animate-fade-in"><Cell3D /></div>
         </div>
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-700 pointer-events-none">
           <span className="text-xs tracking-widest uppercase">Scroll</span>
