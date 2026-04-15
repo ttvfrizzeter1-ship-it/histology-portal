@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --page-inner-bg: rgba(10,10,10,0.36);
+  --card-bg: rgba(20,20,20,0.54);
+  --sidebar-bg: rgba(12,12,12,0.62);
+  --input-bg: rgba(26,26,26,0.88);
+  --input-border: rgba(90,90,90,0.45);
+  --body-bg: #0b0b0b;
+  --text-shadow: 0 1px 3px rgba(0,0,0,0.75);
+}
+
+:root[data-theme="light"] {
+  --page-inner-bg: rgba(255,255,255,0.10);
+  --card-bg: rgba(255,255,255,0.18);
+  --sidebar-bg: rgba(255,255,255,0.14);
+  --input-bg: rgba(255,255,255,0.20);
+  --input-border: rgba(255,255,255,0.35);
+  --body-bg: #141414;
+  --text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+}
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background: var(--body-bg);
+  color: #fff;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #FFD700; border-radius: 3px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.animate-fade-up { animation: fadeUp 0.8s ease both; }
+.animate-fade-up-1 { animation: fadeUp 0.8s 0.2s ease both; }
+.animate-fade-up-2 { animation: fadeUp 0.8s 0.4s ease both; }
+.animate-fade-up-3 { animation: fadeUp 0.8s 0.7s ease both; }
+.animate-fade-in { animation: fadeIn 1.2s ease both; }
+
+.card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.card-hover:hover { transform: translateY(-5px); box-shadow: 0 24px 60px rgba(255,215,0,0.12); }
+
+.input-dark {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input-dark:focus {
+  outline: none;
+  border-color: #FFD700;
+  box-shadow: 0 0 0 3px rgba(255,215,0,0.08);
+}
+.input-dark::placeholder { color: #555; }
+
+.yellow-glow { box-shadow: 0 0 30px rgba(255,215,0,0.25); }
+
+.glass-panel {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(4px);
+}
+
+.glass-panel-dark {
+  background: rgba(12,12,12,0.18);
+  border: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(4px);
+}
+
+/* Slideshow background bleed-through for inner pages */
+.page-slide-bg {
+  background: rgba(10,10,10,0.0) !important;
+}
+
+/* Cards get a very subtle glass effect when slideshow is active */
+.card-hover {
+  background: rgba(17,17,17,0.65) !important;
+  backdrop-filter: blur(2px);
+}
+
+/* ── TEXT VISIBILITY OVER SLIDESHOW ── */
+body {
+  text-shadow: var(--text-shadow);
+}
+
+/* All page sections get dark semi-transparent bg */
+.page-inner {
+  background: var(--page-inner-bg) !important;
+  backdrop-filter: blur(6px);
+  min-height: 100vh;
+}
+
+/* Cards fully opaque */
+.card-hover, [class*="bg-[#111]"], [class*="bg-\[#111\]"] {
+  background: var(--card-bg) !important;
+  backdrop-filter: blur(4px);
+}
+
+/* Sidebar fully opaque */
+aside {
+  background: var(--sidebar-bg) !important;
+  backdrop-filter: blur(8px);
+}

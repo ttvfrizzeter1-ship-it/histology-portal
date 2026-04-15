@@ -1,0 +1,14 @@
+{
+  "name": "histology-portal",
+  "version": "1.0.0",
+  "description": "PDMU Histology Portal - Full Stack",
+  "scripts": {
+    "install:all": "cd server && npm install && cd ../client && npm install",
+    "seed": "cd server && npm run seed",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "start": "cd server && npm start",
+    "build": "cd client && npm run build",
+    "postinstall": "cd server && npm install && cd ../client && npm install"
+  }
+}
