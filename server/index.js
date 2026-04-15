@@ -47,8 +47,8 @@ app.use('/api/upload', require('./routes/upload'));
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date() }));
 
 initDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`\n🔬 Histology Portal API → http://localhost:${PORT}`);
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n🔬 Histology Portal API → listening on port ${PORT}`);
     console.log(`📁 Uploads → http://localhost:${PORT}/uploads/`);
     console.log(`📚 Run "node db/seed.js" to populate with test data\n`);
   });
