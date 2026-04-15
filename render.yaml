@@ -2,7 +2,7 @@ services:
   - type: web
     name: histology-portal-backend
     runtime: node
-    buildCommand: cd server && npm install
+    buildCommand: cd client && npm install && npm run build && cd ../server && npm install
     startCommand: cd server && npm start
     envVars:
       - key: NODE_ENV
@@ -13,23 +13,8 @@ services:
         fromDatabase:
           name: histology-db
           property: connectionString
-      - key: FRONTEND_URL
-        fromService:
-          name: histology-portal-frontend
-          property: url
       - key: JWT_SECRET
         generateValue: true
-  
-  - type: web
-    name: histology-portal-frontend
-    runtime: static
-    buildCommand: cd client && npm install && npm run build
-    staticPublishPath: client/dist
-    envVars:
-      - key: VITE_API_URL
-        fromService:
-          name: histology-portal-backend
-          property: url
 
 databases:
   - name: histology-db

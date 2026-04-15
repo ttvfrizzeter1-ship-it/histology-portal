@@ -10,13 +10,18 @@ const PORT = process.env.PORT || 3001;
 // CORS configuration
 const corsOptions = {
   origin: (origin, callback) => {
+    if (!origin || process.env.NODE_ENV === 'production') {
+      callback(null, true);
+      return;
+    }
+
     const allowedOrigins = [
       'http://localhost:5173',
       'http://localhost:3000',
       process.env.FRONTEND_URL
     ].filter(Boolean);
-    
-    if (!origin || allowedOrigins.includes(origin)) {
+
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('CORS not allowed'));
@@ -45,6 +50,15 @@ app.use('/api/aristo', require('./routes/aristo'));
 app.use('/api/upload', require('./routes/upload'));
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date() }));
+
+if (process.env.NODE_ENV === 'production') {
+  const clientDist = path.join(__dirname, '../client/dist');
+  app.use(express.static(clientDist));
+  app.get('*', (req, res) => {
+    if (req.path.startsWith('/api')) return res.status(404).send('Not found');
+    res.sendFile(path.join(clientDist, 'index.html'));
+  });
+}
 
 initDB().then(() => {
   app.listen(PORT, '0.0.0.0', () => {
