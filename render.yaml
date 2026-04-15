@@ -13,6 +13,10 @@ services:
         fromDatabase:
           name: histology-db
           property: connectionString
+      - key: FRONTEND_URL
+        fromService:
+          name: histology-portal-frontend
+          property: url
       - key: JWT_SECRET
         generateValue: true
   
@@ -21,6 +25,11 @@ services:
     runtime: static
     buildCommand: cd client && npm install && npm run build
     staticPublishPath: client/dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          name: histology-portal-backend
+          property: url
 
 databases:
   - name: histology-db
