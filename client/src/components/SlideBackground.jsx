@@ -20,6 +20,7 @@ export default function SlideBackground({ opacity, brightness, saturation }) {
   const overlayOpacity = opacity ?? 0;
   const slideBrightness = brightness ?? (isLight ? 0.94 : 0.82);
   const slideSaturation = saturation ?? (isLight ? 1 : 0.96);
+  const darkOverlayOpacity = Math.min(0.35, isLight ? overlayOpacity * 0.65 : overlayOpacity + 0.08);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -69,7 +70,7 @@ export default function SlideBackground({ opacity, brightness, saturation }) {
       {/* Overlay */}
       <div style={{
         position: 'absolute', inset: 0,
-        background: `rgba(255,255,255,${overlayOpacity})`,
+        background: `rgba(0,0,0,${darkOverlayOpacity})`,
       }} />
     </div>
   );
