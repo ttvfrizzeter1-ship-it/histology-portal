@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const { initDB } = require('./db/database');
+const { seed } = require('./db/seed');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -60,7 +61,13 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-initDB().then(() => {
+initDB().then(async () => {
+  const userCount = await require('./db/database').db('users').count('id as count').first();
+  if (!userCount || Number(userCount.count) === 0) {
+    console.log('🔄 No users found — seeding default accounts...');
+    await seed();
+  }
+
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`\n🔬 Histology Portal API → listening on port ${PORT}`);
     console.log(`📁 Uploads → http://localhost:${PORT}/uploads/`);

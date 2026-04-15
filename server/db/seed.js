@@ -63,7 +63,10 @@ async function seed() {
   console.log('\n🎉 Done! Portal is empty — add content via admin panel.');
   console.log('   Teachers: ye.stetsuk@pdmu.edu.ua / pdmu2024');
   console.log('   Student demo: student@pdmu.edu.ua / student123');
-  process.exit(0);
 }
 
-seed().catch(e => { console.error(e); process.exit(1); });
+if (require.main === module) {
+  seed().catch(e => { console.error(e); process.exit(1); });
+}
+
+module.exports = { seed };
