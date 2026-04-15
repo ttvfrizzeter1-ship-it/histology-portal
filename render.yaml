@@ -16,8 +16,9 @@ services:
       - key: JWT_SECRET
         generateValue: true
   
-  - type: static_site
+  - type: web
     name: histology-portal-frontend
+    runtime: static
     buildCommand: cd client && npm install && npm run build
     staticPublishPath: client/dist
 
