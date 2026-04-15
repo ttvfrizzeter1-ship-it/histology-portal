@@ -23,12 +23,9 @@ services:
     plan: free
     buildCommand: cd client && npm install && npm run build
     staticPublishPath: client/dist
-    routes:
-      - path: /api
-        service: histology-portal-backend
 
 databases:
   - name: histology-db
     ipAllowList: []
     plan: free
-    postgresVersion: "15"
+    postgresMajorVersion: "15"
