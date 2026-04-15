@@ -30,8 +30,8 @@ export default function Login() {
       <SlideBackground opacity={0.09} />
       {/* Left panel */}
       <div className="hidden lg:flex flex-col justify-between w-1/2 bg-black/20 backdrop-blur-2xl border-r border-white/10 p-12 relative z-10">
-        <Link to="/" className="flex items-center gap-2 h-11">
-          <div className="w-12 h-12 rounded overflow-hidden bg-yellow-400 flex items-center justify-center">
+        <Link to="/" className="flex flex-col items-start gap-2">
+          <div className="w-20 h-20 rounded-lg overflow-hidden bg-transparent border border-white/20 flex items-center justify-center">
             <img
               src="/uploads/pdmu-logo.png"
               alt="ПДМУ"
@@ -58,8 +58,8 @@ export default function Login() {
       {/* Right: form */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative z-10">
         <div className="w-full max-w-md">
-          <Link to="/" className="flex items-center gap-2 mb-8 lg:hidden h-11">
-            <div className="w-11 h-11 rounded overflow-hidden bg-yellow-400 flex items-center justify-center">
+          <Link to="/" className="flex flex-col items-start gap-2 mb-8 lg:hidden">
+            <div className="w-16 h-16 rounded-lg overflow-hidden bg-transparent border border-white/20 flex items-center justify-center">
               <img
                 src="/uploads/pdmu-logo.png"
                 alt="ПДМУ"
