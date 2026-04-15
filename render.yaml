@@ -2,7 +2,6 @@ services:
   - type: web
     name: histology-portal-backend
     runtime: node
-    plan: free
     buildCommand: cd server && npm install
     startCommand: cd server && npm start
     envVars:
@@ -17,10 +16,8 @@ services:
       - key: JWT_SECRET
         generateValue: true
   
-  - type: web
+  - type: static_site
     name: histology-portal-frontend
-    runtime: static
-    plan: free
     buildCommand: cd client && npm install && npm run build
     staticPublishPath: client/dist
 
