@@ -41,7 +41,7 @@ export default function Login() {
               }}
             />
           </div>
-          <span className="text-white font-bold text-sm leading-none">Гістологія ПДМУ</span>
+          <span className="text-gray-300 font-bold text-sm leading-none">Гістологія ПДМУ</span>
         </Link>
         <div>
           <h1 className="font-display text-7xl text-white leading-none mb-2">ДОБРО</h1>
@@ -69,7 +69,7 @@ export default function Login() {
                 }}
               />
             </div>
-            <span className="text-white font-bold text-sm leading-none">Гістологія ПДМУ</span>
+            <span className="text-gray-300 font-bold text-sm leading-none">Гістологія ПДМУ</span>
           </Link>
 
           <h2 className="text-white text-2xl font-bold mb-1">Вхід до порталу</h2>
@@ -134,3 +134,4 @@ export default function Login() {
     </div>
   );
 }
+
