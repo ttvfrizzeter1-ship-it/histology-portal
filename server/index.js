@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const { initDB } = require('./db/database');
 const { seed } = require('./db/seed');
 
@@ -34,6 +35,16 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
+
+// Ensure brand logo is always available on production even if uploads storage is empty.
+app.get('/uploads/pdmu-logo.png', (req, res) => {
+  const uploadLogo = path.join(__dirname, 'data/uploads/pdmu-logo.png');
+  if (fs.existsSync(uploadLogo)) {
+    return res.sendFile(uploadLogo);
+  }
+  const fallbackLogo = path.join(__dirname, '../client/public/uploads/pdmu-logo.png');
+  return res.sendFile(fallbackLogo);
+});
 
 // Serve uploaded files statically
 app.use('/uploads', express.static(path.join(__dirname, 'data/uploads')));
