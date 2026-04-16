@@ -107,3 +107,8 @@ npm run seed
 
 **Backend**: `https://your-api.onrender.com`  
 **Frontend**: `https://your-web.onrender.com`
+
+## Frontend env (важливо)
+- Для Static Site на Render додайте змінну: VITE_API_URL=https://<your-backend-service>.onrender.com/api
+- Без цього фронтенд буде звертатися на відносний /api, і реєстрація/логін можуть не працювати.
+
