@@ -12,7 +12,13 @@ router.post('/register', async (req, res) => {
     if (exists) return res.status(409).json({ error: 'Email вже зареєстровано' });
     const hash = bcrypt.hashSync(password, 10);
     // Students only — no role param accepted
-    const [id] = await db('users').insert({ name, email, password: hash, role: 'student', group_id: null });
+    let insertQuery = db('users').insert({ name, email, password: hash, role: 'student', group_id: null });
+    if (db.client.config.client === 'pg') {
+      insertQuery = insertQuery.returning('id');
+    }
+    const inserted = await insertQuery;
+    const first = Array.isArray(inserted) ? inserted[0] : inserted;
+    const id = typeof first === 'object' ? first.id : first;
     const user = await db('users as u').leftJoin('groups as g','u.group_id','g.id').select('u.id','u.name','u.email','u.role','u.group_id','u.position','g.name as group_name').where('u.id', id).first();
     const token = jwt.sign({ id: user.id, email: user.email, role: user.role, name: user.name, group_id: user.group_id }, SECRET, { expiresIn: '7d' });
     res.json({ token, user });
