@@ -2,6 +2,17 @@ const router = require('express').Router();
 const { db } = require('../db/database');
 const { auth, teacherOnly } = require('../middleware/auth');
 
+function extractInsertedId(inserted) {
+  const first = Array.isArray(inserted) ? inserted[0] : inserted;
+  return typeof first === 'object' ? first.id : first;
+}
+
+async function insertWithOptionalReturning(table, payload) {
+  let q = db(table).insert(payload);
+  if (db.client.config.client === 'pg') q = q.returning('id');
+  return extractInsertedId(await q);
+}
+
 const withJoins = () => db('atlas as a')
   .leftJoin('topics as t', 'a.topic_id', 't.id')
   .select('a.*', 't.name as topic_name');
@@ -20,7 +31,7 @@ router.post('/', auth, teacherOnly, async (req, res) => {
   try {
     const { name, latin_name, description, staining, image_url, topic_id, magnification } = req.body;
     if (!name || !image_url) return res.status(400).json({ error: 'Missing fields' });
-    const [id] = await db('atlas').insert({ name, latin_name: latin_name || null, description: description || null, staining: staining || null, image_url, topic_id: topic_id || null, magnification: magnification || null });
+    const id = await insertWithOptionalReturning('atlas', { name, latin_name: latin_name || null, description: description || null, staining: staining || null, image_url, topic_id: topic_id || null, magnification: magnification || null });
     res.json(await db('atlas').where({ id }).first());
   } catch (e) { res.status(500).json({ error: e.message }); }
 });

@@ -2,6 +2,17 @@ const router = require('express').Router();
 const { db } = require('../db/database');
 const { auth, teacherOnly } = require('../middleware/auth');
 
+function extractInsertedId(inserted) {
+  const first = Array.isArray(inserted) ? inserted[0] : inserted;
+  return typeof first === 'object' ? first.id : first;
+}
+
+async function insertWithOptionalReturning(table, payload) {
+  let q = db(table).insert(payload);
+  if (db.client.config.client === 'pg') q = q.returning('id');
+  return extractInsertedId(await q);
+}
+
 const withJoins = () => db('materials as m')
   .leftJoin('users as u', 'm.author_id', 'u.id')
   .leftJoin('topics as t', 'm.topic_id', 't.id')
@@ -22,7 +33,7 @@ router.post('/topics', auth, teacherOnly, async (req, res) => {
     const exists = await db('topics').whereRaw('LOWER(name) = LOWER(?)', [trimmedName]).first();
     if (exists) return res.status(409).json({ error: 'Topic already exists' });
 
-    const [id] = await db('topics').insert({
+    const id = await insertWithOptionalReturning('topics', {
       name: trimmedName,
       description: description || null,
       course: Number(course) || 2,
@@ -99,7 +110,7 @@ router.post('/', auth, teacherOnly, async (req, res) => {
   try {
     const { title, description, file_url, file_type, topic_id, group_id, video_url } = req.body;
     if (!title) return res.status(400).json({ error: 'Missing title' });
-    const [id] = await db('materials').insert({ title, description: description || null, file_url: file_url || null, file_type: file_type || 'pdf', topic_id: topic_id || null, group_id: group_id || null, author_id: req.user.id, video_url: video_url || null });
+    const id = await insertWithOptionalReturning('materials', { title, description: description || null, file_url: file_url || null, file_type: file_type || 'pdf', topic_id: topic_id || null, group_id: group_id || null, author_id: req.user.id, video_url: video_url || null });
     res.json(await db('materials').where({ id }).first());
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
